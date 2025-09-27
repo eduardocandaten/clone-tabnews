@@ -4,7 +4,10 @@
   "description": "Implementação do tabnews.com.br para o curso.dev",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run services:up && next dev",
+    "services:up": "docker compose --file infra/compose.yaml up --detach",
+    "services:stop": "docker compose --file infra/compose.yaml stop",
+    "services:down": "docker compose --file infra/compose.yaml down",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "jest",
