@@ -1,10 +1,10 @@
 import database from "infra/database";
+import orchestrator from "tests/orchestrator.js";
 
-beforeAll(cleanDatabase);
-
-async function cleanDatabase() {
-  database.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
-}
+beforeAll(async () => {
+  await orchestrator.waitForAllServices();
+  await database.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
+});
 
 test("Method not allowed to api/v1/migrations should return 405", async () => {
   const methodsNotAlloweds = ["DELETE", "PUT", "PATCH"];
