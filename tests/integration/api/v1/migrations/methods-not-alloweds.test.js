@@ -1,21 +1,27 @@
-import database from "infra/database";
 import orchestrator from "tests/orchestrator.js";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-  await database.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
+  await orchestrator.clearDatabase();
 });
 
-test("Method not allowed to api/v1/migrations should return 405", async () => {
-  const methodsNotAlloweds = ["DELETE", "PUT", "PATCH"];
+describe("DELETE, PUT and PATCH api/v1/migrations", () => {
+  describe("Anonymous user", () => {
+    test("Running pending migrations", async () => {
+      const methodsNotAlloweds = ["DELETE", "PUT", "PATCH"];
 
-  for (const method of methodsNotAlloweds) {
-    const response = await fetch("http://localhost:3000/api/v1/migrations", {
-      method,
+      for (const method of methodsNotAlloweds) {
+        const response = await fetch(
+          "http://localhost:3000/api/v1/migrations",
+          {
+            method,
+          },
+        );
+        const responseBody = await response.json();
+
+        expect(response.status).toBe(405);
+        expect(responseBody).toHaveProperty("error");
+      }
     });
-    const responseBody = await response.json();
-
-    expect(response.status).toBe(405);
-    expect(responseBody).toHaveProperty("error");
-  }
+  });
 });
