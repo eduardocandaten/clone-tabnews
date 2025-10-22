@@ -12,6 +12,9 @@ export default function StatusPage() {
     <>
       <h1>Status</h1>
       <UpdatedAt />
+
+      <h2>Banco de Dados</h2>
+      <DatabaseInfo />
     </>
   );
 }
@@ -27,4 +30,30 @@ function UpdatedAt() {
   }
 
   return <div>Última atualização: {updatedAtText}</div>;
+}
+
+function DatabaseInfo() {
+  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
+    refreshInterval: 2000,
+  });
+
+  let database;
+
+  if (!isLoading && data) {
+    database = data.dependencies.database;
+  }
+
+  return (
+    <div>
+      {isLoading ? (
+        "Carregando..."
+      ) : (
+        <>
+          <div>Versão do Postgres: {database.version}</div>
+          <div>Máximo de Conexões: {database.max_connections}</div>
+          <div>Conexões Abertas: {database.opened_connections}</div>
+        </>
+      )}
+    </div>
+  );
 }
