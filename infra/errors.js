@@ -83,7 +83,9 @@ export class NotFoundError extends Error {
       cause,
     });
     this.name = "NotFoundError";
-    this.action = action || "Verifique se os parâmetros enviados nesse recurso estão certos";
+    this.action =
+      action ||
+      "Verifique se os parâmetros enviados nesse recurso estão certos";
     this.statusCode = 404;
   }
 
