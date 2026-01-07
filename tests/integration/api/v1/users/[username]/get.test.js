@@ -10,16 +10,8 @@ beforeAll(async () => {
 describe("GET api/v1/users/[username]", () => {
   describe("Anonymous user", () => {
     test("With exact case match", async () => {
-      await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "username",
-          email: "exemple@email.com",
-          password: "password123",
-        }),
+      const createdUser = await orchestrator.createUser({
+        username: "username",
       });
 
       const response = await fetch(
@@ -31,7 +23,7 @@ describe("GET api/v1/users/[username]", () => {
       expect(responseBody).toEqual({
         id: responseBody.id,
         username: "username",
-        email: "exemple@email.com",
+        email: createdUser.email,
         password: responseBody.password,
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
@@ -42,16 +34,8 @@ describe("GET api/v1/users/[username]", () => {
     });
 
     test("With exact mismatch", async () => {
-      await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "username2",
-          email: "exemple2@email.com",
-          password: "password123",
-        }),
+      const createdUser = await orchestrator.createUser({
+        username: "username2",
       });
 
       const response = await fetch(
@@ -63,7 +47,7 @@ describe("GET api/v1/users/[username]", () => {
       expect(responseBody).toEqual({
         id: responseBody.id,
         username: "username2",
-        email: "exemple2@email.com",
+        email: createdUser.email,
         password: responseBody.password,
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
@@ -75,7 +59,7 @@ describe("GET api/v1/users/[username]", () => {
 
     test("With nonexisting username", async () => {
       const response = await fetch(
-        "http://localhost:3000/api/v1/users/nonexistent user",
+        "http://localhost:3000/api/v1/users/nonexistent",
       );
       const responseBody = await response.json();
 
