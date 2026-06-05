@@ -114,7 +114,7 @@ describe("POST api/v1/sessions", () => {
       const parsedSetCookie = setCookieParser(response, {
         map: true,
       });
-      console.log(parsedSetCookie);
+      const cacheControl = response.headers.get("Cache-Control");
 
       expect(response.status).toBe(201);
       expect(responseBody).toEqual({
@@ -137,6 +137,9 @@ describe("POST api/v1/sessions", () => {
         path: "/",
         httpOnly: true,
       });
+      expect(cacheControl).toBe(
+        "no-store, no-cache, max-age=0, must-revalidate",
+      );
     });
   });
 });
