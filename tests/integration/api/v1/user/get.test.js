@@ -73,12 +73,23 @@ describe("GET api/v1/user", () => {
       });
       const responseBody = await response.json();
 
+      const parsedSetCookie = setCookieParser(response, {
+        map: true,
+      });
+
       expect(response.status).toBe(401);
       expect(responseBody).toEqual({
         name: "UnauthorizedError",
         message: "Usuário não possui sessão ativa",
         action: "Verifique se este usuário está logado e tente novamente",
         status_code: 401,
+      });
+      expect(parsedSetCookie.session_id).toEqual({
+        name: "session_id",
+        value: "invalid",
+        maxAge: -1,
+        path: "/",
+        httpOnly: true,
       });
     });
 
@@ -101,12 +112,23 @@ describe("GET api/v1/user", () => {
       });
       const responseBody = await response.json();
 
+      const parsedSetCookie = setCookieParser(response, {
+        map: true,
+      });
+
       expect(response.status).toBe(401);
       expect(responseBody).toEqual({
         name: "UnauthorizedError",
         message: "Usuário não possui sessão ativa",
         action: "Verifique se este usuário está logado e tente novamente",
         status_code: 401,
+      });
+      expect(parsedSetCookie.session_id).toEqual({
+        name: "session_id",
+        value: "invalid",
+        maxAge: -1,
+        path: "/",
+        httpOnly: true,
       });
     });
 
