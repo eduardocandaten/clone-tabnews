@@ -1,3 +1,4 @@
+import activation from "models/activation.js";
 import orchestrator from "tests/orchestrator.js";
 
 beforeAll(async () => {
@@ -8,6 +9,8 @@ beforeAll(async () => {
 });
 
 describe("Use case: Registration Flow (All successful)", () => {
+  let createUserResponseBody;
+
   test("Create user account", async () => {
     const createUserResponse = await fetch(
       "http://localhost:3000/api/v1/users",
@@ -23,7 +26,7 @@ describe("Use case: Registration Flow (All successful)", () => {
         }),
       },
     );
-    const createUserResponseBody = await createUserResponse.json();
+    createUserResponseBody = await createUserResponse.json();
 
     expect(createUserResponse.status).toBe(201);
     expect(createUserResponseBody).toEqual({
@@ -35,5 +38,19 @@ describe("Use case: Registration Flow (All successful)", () => {
       created_at: createUserResponseBody.created_at,
       updated_at: createUserResponseBody.updated_at,
     });
+  });
+
+  test("Receive activation email", async () => {
+    const lastEmail = await orchestrator.getLastEmail();
+
+    const activationTokenObject = await activation.findOneByUserId(
+      createUserResponseBody.id,
+    );
+
+    expect(lastEmail.sender).toBe("<contato@fintab.com.br>");
+    expect(lastEmail.recipients[0]).toBe("<registration.flow@email.com>");
+    expect(lastEmail.subject).toBe("Ative seu cadastro no FinTab!");
+    expect(lastEmail.text).toContain("RegistrationFlow");
+    expect(lastEmail.text).toContain(activationTokenObject.id);
   });
 });
