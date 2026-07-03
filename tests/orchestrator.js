@@ -65,6 +65,10 @@ async function createSession(userId) {
   return await session.create(userId);
 }
 
+async function createToken(userId) {
+  return await activation.create(userId);
+}
+
 async function activateUser(inactiveUserId) {
   return await activation.activateUserByUserId(inactiveUserId);
 }
@@ -110,6 +114,7 @@ const orchestrator = {
   runPendingMigrations,
   createUser,
   createSession,
+  createToken,
   activateUser,
   deleteAllEmails,
   getLastEmail,
