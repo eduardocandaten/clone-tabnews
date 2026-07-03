@@ -73,6 +73,10 @@ async function activateUser(inactiveUserId) {
   return await activation.activateUserByUserId(inactiveUserId);
 }
 
+async function addFeaturesToUser(userObject, features) {
+  return await user.addFeatures(userObject.id, features);
+}
+
 async function deleteAllEmails() {
   await fetch(`${emailHttpUrl}/messages`, {
     method: "DELETE",
@@ -116,6 +120,7 @@ const orchestrator = {
   createSession,
   createToken,
   activateUser,
+  addFeaturesToUser,
   deleteAllEmails,
   getLastEmail,
   extractUUID,
