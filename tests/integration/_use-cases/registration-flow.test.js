@@ -49,7 +49,7 @@ describe("Use case: Registration Flow (All successful)", () => {
     const activationTokenObject =
       await activation.findOneValidByToken(activationToken);
 
-    expect(lastEmail.sender).toBe("<contato@fintab.com.br>");
+    expect(lastEmail.sender).toBe("<contato@eduardocandaten.com.br>");
     expect(lastEmail.recipients[0]).toBe("<registration.flow@email.com>");
     expect(lastEmail.subject).toBe("Ative seu cadastro no FinTab!");
     expect(lastEmail.text).toContain("RegistrationFlow");
