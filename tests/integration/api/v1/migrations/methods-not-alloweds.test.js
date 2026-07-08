@@ -1,4 +1,5 @@
 import orchestrator from "tests/orchestrator.js";
+import webserver from "infra/webserver.js";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -11,12 +12,9 @@ describe("DELETE, PUT and PATCH api/v1/migrations", () => {
       const methodsNotAlloweds = ["DELETE", "PUT", "PATCH"];
 
       for (const method of methodsNotAlloweds) {
-        const response = await fetch(
-          "http://localhost:3000/api/v1/migrations",
-          {
-            method,
-          },
-        );
+        const response = await fetch(`${webserver.origin}/api/v1/migrations`, {
+          method,
+        });
         const responseBody = await response.json();
 
         expect(response.status).toBe(405);
