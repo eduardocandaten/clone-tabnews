@@ -62,16 +62,16 @@ async function createUser(userObject) {
   });
 }
 
-async function createSession(userId) {
-  return await session.create(userId);
+async function createSession(user) {
+  return await session.create(user.id);
 }
 
-async function createToken(userId) {
-  return await activation.create(userId);
+async function createToken(user) {
+  return await activation.create(user.id);
 }
 
-async function activateUser(inactiveUserId) {
-  return await activation.activateUserByUserId(inactiveUserId);
+async function activateUser(inactiveUser) {
+  return await activation.activateUserByUserId(inactiveUser.id);
 }
 
 async function addFeaturesToUser(userObject, features) {
