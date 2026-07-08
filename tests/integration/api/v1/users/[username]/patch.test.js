@@ -237,6 +237,8 @@ describe("PATCH api/v1/users/[username]", () => {
       );
       const responseBody = await response.json();
 
+      const userInDatabase = await user.findOneByUsername(createdUser.username);
+
       expect(response.status).toBe(200);
       expect(responseBody).toEqual({
         id: responseBody.id,
@@ -257,6 +259,7 @@ describe("PATCH api/v1/users/[username]", () => {
         Date.parse(responseBody.updated_at) >
           Date.parse(responseBody.created_at),
       ).toBe(true);
+      expect(userInDatabase.email).toBe("uniqueEmail2@email.com");
     });
 
     test("With new `password`", async () => {
