@@ -78,6 +78,7 @@ describe("GET api/v1/user", () => {
         maxAge: session.EXPIRATION_IN_MILISECONDS / 1000,
         path: "/",
         httpOnly: true,
+        sameSite: "Lax",
       });
       expect(cacheControl).toBe(
         "no-store, no-cache, max-age=0, must-revalidate",
@@ -212,6 +213,7 @@ describe("GET api/v1/user", () => {
         maxAge: session.EXPIRATION_IN_MILISECONDS / 1000,
         path: "/",
         httpOnly: true,
+        sameSite: "Lax",
       });
     });
   });

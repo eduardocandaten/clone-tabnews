@@ -138,6 +138,7 @@ describe("POST api/v1/sessions", () => {
         maxAge: session.EXPIRATION_IN_MILISECONDS / 1000,
         path: "/",
         httpOnly: true,
+        sameSite: "Lax",
       });
       expect(cacheControl).toBe(
         "no-store, no-cache, max-age=0, must-revalidate",
